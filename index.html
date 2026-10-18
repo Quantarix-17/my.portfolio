@@ -133,13 +133,25 @@ footer{padding:28px 0;text-align:center;border-top:1px solid var(--line);color:v
 .timeline li.now::before{background:var(--gold)}
 .timeline h3{font-size:1.15rem;margin:.2em 0 .1em}
 .timeline p{margin:0}
-/* contact form */
+
 .cform{display:grid;gap:12px;margin-top:24px;max-width:480px}
 .cform label{display:grid;gap:4px;font-size:.9rem;font-weight:600}
 .cform input,.cform textarea{font:inherit;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%}
 .cform textarea{min-height:120px;resize:vertical}
 .cform .btn{cursor:pointer;font:inherit;font-weight:600;justify-self:start}
 .cform .hint{font-size:.85rem;margin:0}
+.cbtns{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:10px}
+.cbtns button{font:inherit;font-size:.9rem;font-weight:600;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 16px;min-height:40px;cursor:pointer}
+.cbtns button:hover{border-color:var(--gold)}
+.cm{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(8,7,6,.65)}
+.cm-box{width:min(100%,460px);background:var(--card);color:var(--ink);border:1px solid var(--line);border-radius:14px;padding:24px;box-shadow:0 24px 70px rgba(0,0,0,.5)}
+.cm-box h3{margin:0 0 10px}
+.cm-link{margin:0 0 12px;padding:10px 12px;border:1px dashed var(--line);border-radius:8px;overflow-wrap:anywhere;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.9rem}
+.cm-act{display:flex;flex-wrap:wrap;gap:10px}
+.cm-act .btn{cursor:pointer;font:inherit;font-weight:600;padding:9px 18px}
+.clist{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:.95rem}
+.clist li{overflow-wrap:anywhere}
+.clist b{display:inline-block;min-width:6.5em}
 .wa{display:inline-flex;align-items:center;gap:6px}
 /* scroll reveal */
 .js .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s ease}
@@ -283,11 +295,19 @@ footer{padding:28px 0;text-align:center;border-top:1px solid var(--line);color:v
 <section id="contact"><div class="wrap">
 <h2 data-bn="যোগাযোগ">Contact</h2>
 <p data-bn="আপনার কাছ থেকে শুনতে চাই। ইমেইলই আমাকে পাওয়ার সবচেয়ে ভালো উপায়।">I’d love to hear from you. Email is the best way to reach me.</p>
-<div class="card" style="max-width:480px">
+<div class="card" style="max-width:520px">
 <p style="margin:0 0 .4em"><strong>Tamim Hossen Emon</strong> (Tamim)</p>
-<p style="margin:0 0 .4em" data-bn="ঝিনাইদহ, বাংলাদেশ">Jhenaidah, Bangladesh</p>
-<p style="margin:0 0 .4em"><a href="mailto:tamimhossen6238@gmail.com">tamimhossen6238@gmail.com</a></p>
-<p style="margin:0"><span data-bn="WhatsApp ইউজারনেম:">WhatsApp username:</span> <strong>tamim2213</strong></p>
+<p style="margin:0 0 .4em" class="muted" data-bn="ঝিনাইদহ, বাংলাদেশ">Jhenaidah, Bangladesh</p>
+<p class="muted" style="margin:0 0 14px;font-size:.9rem" data-bn="একটি প্ল্যাটফর্ম বেছে নিন:">Choose a platform:</p>
+<ul class="cbtns" id="cbtns"></ul>
+</div>
+<div id="cm" class="cm" role="dialog" aria-modal="true" aria-labelledby="cmT" hidden>
+<div class="cm-box">
+<h3 id="cmT"></h3>
+<p class="cm-link" id="cmL"></p>
+<p class="muted" id="cmQ" style="margin:0 0 16px"></p>
+<div class="cm-act"><button type="button" class="btn primary" id="cmGo"></button><button type="button" class="btn" id="cmCopy"></button><button type="button" class="btn" id="cmNo"></button></div>
+</div>
 </div>
 <form class="cform" id="cform" aria-labelledby="cfH">
 <h3 id="cfH" style="margin:0" data-bn="একটি বার্তা পাঠান">Send a message</h3>
@@ -297,7 +317,7 @@ footer{padding:28px 0;text-align:center;border-top:1px solid var(--line);color:v
 <button class="btn primary" type="submit" data-bn="বার্তা পাঠান">Send message</button>
 <p class="hint muted" id="cfNote" role="status" aria-live="polite"></p>
 </form>
-<ul class="chips" id="links2" style="margin-top:20px"></ul>
+
 </div></section>
 </main>
 
@@ -386,7 +406,7 @@ if (projects.length) document.getElementById("noProjects").hidden = true;
 
 // Contact links
 const ul = document.getElementById("links2");
-links.filter(l => l.url).forEach(l => {
+if (ul) links.filter(l => l.url).forEach(l => {
   const li = el("li");
   li.append(el("a", { href: l.url, target: "_blank", rel: "noopener noreferrer" }, l.label));
   ul.append(li);
@@ -601,9 +621,17 @@ document.getElementById('cform').addEventListener('submit', async e => {
       })
     });
     const j = await r.json().catch(() => ({}));
-    if (!r.ok || j.success === 'false' || j.success === false) throw new Error('send failed');
+    if (!r.ok || String(j.success) === 'false') { console.error('FormSubmit:', r.status, j); throw new Error(j.message || ('HTTP ' + r.status)); }
     note.textContent = T.ok; f.reset();
-  } catch (err) { note.textContent = T.fail; }
+  } catch (err) {
+    console.error(err);
+    const body = f.msg.value.trim() + '\n\n— ' + f.name.value.trim() + (f.email.value.trim() ? ' (' + f.email.value.trim() + ')' : '');
+    const href = 'mailto:tamimhossen6238@gmail.com?subject=' + encodeURIComponent('Message from ' + f.name.value.trim()) + '&body=' + encodeURIComponent(body);
+    note.textContent = T.fail + ' ';
+    const a = document.createElement('a'); a.href = href; a.textContent = bn ? 'ইমেইল অ্যাপে খুলুন' : 'Open in email app';
+    note.append(a);
+    if (err && err.message) note.append(document.createElement('br'), Object.assign(document.createElement('small'), { textContent: '(' + err.message + ')' }));
+  }
   btn.disabled = false;
 });
 
@@ -616,6 +644,65 @@ document.getElementById('cform').addEventListener('submit', async e => {
     entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); o.unobserve(en.target); } });
   }, { threshold: 0.08, rootMargin: '0px 0px -6% 0px' });
   items.forEach(w => { w.classList.add('reveal'); ro.observe(w); });
+})();
+
+/* ===== Contact buttons + confirmation modal ===== */
+(function () {
+  const C = [
+    { n: 'Email', t: 'tamimhossen6238@gmail.com', u: 'mailto:tamimhossen6238@gmail.com' },
+    { n: 'WhatsApp', t: 'tamim2213', u: null },
+    { n: 'Telegram', t: 't.me/tamim2213', u: 'https://t.me/tamim2213' },
+    { n: 'LinkedIn', t: 'linkedin.com/in/tamim-hossen-b08516399', u: 'https://www.linkedin.com/in/tamim-hossen-b08516399' },
+    { n: 'Facebook', t: 'facebook.com/tamimhossen2213', u: 'https://www.facebook.com/tamimhossen2213' },
+    { n: 'Instagram', t: 'instagram.com/tamim.emon2213', u: 'https://www.instagram.com/tamim.emon2213' },
+    { n: 'X (Twitter)', t: 'x.com/tamim640823', u: 'https://x.com/tamim640823' }
+  ];
+  const S = {
+    en: { open: 'Open link', copy: 'Copy', copied: 'Copied!', cancel: 'Cancel', close: 'Close', q: 'Do you want to open this link?', qMail: 'Do you want to open your email app?', qWa: 'This is a WhatsApp username. Copy it and search for it in WhatsApp.', mail: 'Open email app' },
+    bn: { open: 'লিংক খুলুন', copy: 'কপি', copied: 'কপি হয়েছে!', cancel: 'বাতিল', close: 'বন্ধ করুন', q: 'আপনি কি এই লিংকটি খুলতে চান?', qMail: 'আপনি কি ইমেইল অ্যাপ খুলতে চান?', qWa: 'এটি একটি WhatsApp ইউজারনেম। কপি করে WhatsApp-এ সার্চ করুন।', mail: 'ইমেইল অ্যাপ খুলুন' }
+  };
+  const g = id => document.getElementById(id);
+  const list = g('cbtns'), m = g('cm');
+  let cur = null, opener = null;
+  const L = () => S[document.documentElement.lang === 'bn' ? 'bn' : 'en'];
+  C.forEach((c, i) => {
+    const li = document.createElement('li'), b = document.createElement('button');
+    b.type = 'button'; b.textContent = c.n; b.addEventListener('click', () => show(i));
+    li.append(b); list.append(li);
+  });
+  function show(i) {
+    cur = C[i]; opener = document.activeElement; const l = L();
+    g('cmT').textContent = cur.n; g('cmL').textContent = cur.t;
+    g('cmQ').textContent = !cur.u ? l.qWa : cur.u.startsWith('mailto') ? l.qMail : l.q;
+    g('cmGo').textContent = cur.u && cur.u.startsWith('mailto') ? l.mail : l.open;
+    g('cmGo').hidden = !cur.u;
+    g('cmCopy').textContent = l.copy; g('cmNo').textContent = cur.u ? l.cancel : l.close;
+    m.hidden = false; document.body.style.overflow = 'hidden';
+    (cur.u ? g('cmGo') : g('cmCopy')).focus();
+  }
+  function hide() { m.hidden = true; document.body.style.overflow = ''; if (opener && opener.focus) opener.focus(); }
+  g('cmGo').addEventListener('click', () => {
+    if (cur.u.startsWith('mailto')) location.href = cur.u; else window.open(cur.u, '_blank', 'noopener,noreferrer');
+    hide();
+  });
+  g('cmCopy').addEventListener('click', async () => {
+    const txt = cur.u && !cur.u.startsWith('mailto') ? cur.u : cur.t;
+    try { await navigator.clipboard.writeText(txt); } catch (e) {
+      const r = document.createRange(); r.selectNodeContents(g('cmL')); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    }
+    g('cmCopy').textContent = L().copied;
+  });
+  g('cmNo').addEventListener('click', hide);
+  m.addEventListener('click', e => { if (e.target === m) hide(); });
+  document.addEventListener('keydown', e => {
+    if (m.hidden) return;
+    if (e.key === 'Escape') hide();
+    else if (e.key === 'Tab') {
+      const f = [...m.querySelectorAll('button:not([hidden])')], first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
 })();
 
 </script>
