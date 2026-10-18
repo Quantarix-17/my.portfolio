@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Digital CV — Tamim Hossen Emon</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<style>
+:root{--bg:#e8eef7;--bar:#ffffff;--ink:#0a1b33;--line:#c9d6ea;--blue:#1f5fd6;--navy:#0a1b33;--btn-ink:#ffffff}
+:root[data-theme='dark']{--bg:#07142a;--bar:#0a1b33;--ink:#eef3fb;--line:#1d3357;--blue:#5b97ff;--navy:#0a1b33;--btn-ink:#07142a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,'Segoe UI',Roboto,sans-serif}
+:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+/* top bar (not part of the PDF) */
+.bar{position:sticky;top:0;z-index:10;background:var(--bar);border-bottom:1px solid var(--line)}
+.bar .in{max-width:900px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:8px 18px;border-radius:8px;border:2px solid var(--blue);background:none;color:var(--ink);font:inherit;font-weight:600;font-size:.95rem;text-decoration:none;cursor:pointer}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:var(--btn-ink)}
+.btn:disabled{opacity:.6;cursor:wait}
+/* ===== the CV paper (this is what becomes the PDF) ===== */
+.paper{max-width:794px;margin:22px auto 40px;background:#fff;color:#0a1b33;padding:clamp(18px,5vw,48px);box-shadow:0 4px 24px rgba(10,27,51,.15);font:14.5px/1.55 system-ui,'Segoe UI',Arial,sans-serif}
+.paper.pdf{padding:44px 48px;box-shadow:none;margin:0;max-width:none;width:794px}
+.cv-head{display:flex;gap:22px;align-items:center;flex-wrap:wrap;padding-bottom:18px;border-bottom:3px solid #0a1b33}
+.cv-head img{width:124px;height:124px;border-radius:50%;object-fit:cover;border:4px solid #1f5fd6;flex:none}
+.cv-head h1{font:700 30px/1.15 system-ui,'Segoe UI',Arial,sans-serif;color:#0a1b33;margin:0 0 4px}
+.role{margin:0;color:#1f5fd6;font-size:15px;font-weight:600}
+.contact{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px 18px;font-size:13px}
+.contact b{color:#1f5fd6}
+.sec h2{font:700 17px system-ui,'Segoe UI',Arial,sans-serif;color:#0a1b33;border-bottom:2px solid #1f5fd6;padding-bottom:4px;margin:24px 0 12px}
+.item{margin:0 0 12px;break-inside:avoid}
+.row{display:flex;justify-content:space-between;gap:4px 12px;flex-wrap:wrap}
+.meta{color:#4a5b75;font-size:13px}
+.item p,.sec>p{margin:4px 0}
+.item ul{margin:4px 0 0;padding-left:18px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px}
+.cols h3,.sub{font:700 14px system-ui,'Segoe UI',Arial,sans-serif;color:#1f5fd6;margin:0 0 4px}
+.cols ul{margin:0;padding-left:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;list-style:none;padding:0;margin:0}
+.chips li{border:1px solid #b9cbea;border-radius:6px;padding:2px 12px;font-size:13px}
+@media print{
+  body{background:#fff}.bar{display:none}
+  .paper{box-shadow:none;margin:0;max-width:none;padding:0}
+  @page{size:A4;margin:14mm}
+}
+</style>
+</head>
+<body>
+<div class="bar"><div class="in">
+  <a class="btn" id="back" href="index.html">&larr; <span id="backT">Back to Home</span></a>
+  <button class="btn primary" id="dl" type="button"><span id="dlT">Download PDF</span></button>
+</div></div>
+
+<main>
+<!-- ============ EDIT THE CV BELOW. Whatever is inside this box is what gets downloaded as the PDF. ============ -->
+<article class="paper" id="paper">
+
+<header class="cv-head">
+  <img src="profile.jpg" alt="Photo of Tamim Hossen Emon" width="124" height="124">
+  <div>
+    <h1>Tamim Hossen Emon</h1>
+    <p class="role">First-Year Student, Statistics and Data Science</p>
+    <ul class="contact">
+      <li><b>Email:</b> tamimhossen6238@gmail.com</li>
+      <li><b>Location:</b> Jhenaidah, Bangladesh</li>
+      <li><b>WhatsApp:</b> tamim2213</li>
+      <li><b>Telegram:</b> t.me/tamim2213</li>
+      <li><b>LinkedIn:</b> linkedin.com/in/tamim-hossen-b08516399</li>
+      <li><b>Facebook:</b> facebook.com/tamimhossen2213</li>
+      <li><b>Instagram:</b> instagram.com/tamim.emon2213</li>
+      <li><b>X (Twitter):</b> x.com/tamim640823</li>
+    </ul>
+  </div>
+</header>
+
+<section class="sec">
+  <h2>Profile</h2>
+  <p>I am a first-year student in the Department of Statistics and Data Science at Islamic University, Kushtia, Bangladesh. I am interested in technology, artificial intelligence, data science, and using digital tools to solve real-world problems.</p>
+  <p>I am a complete beginner in coding and I am eager to learn programming from the fundamentals. I used AI tools to help create Paperly, an AI-powered productivity application. My motto is &ldquo;Think to grow.&rdquo;</p>
+</section>
+
+<section class="sec">
+  <h2>Education</h2>
+  <div class="item">
+    <div class="row"><strong>Islamic University, Kushtia, Bangladesh</strong><span class="meta">First Year &middot; Currently studying</span></div>
+    <div>Department of Statistics and Data Science</div>
+  </div>
+  <div class="item">
+    <div class="row"><strong>Govt. Keshab Chandra College, Jhenaidah</strong><span class="meta">Higher Secondary Certificate (HSC) &middot; Science</span></div>
+    <div>GPA: 4.58</div>
+  </div>
+  <div class="item">
+    <div class="row"><strong>Bhatai Secondary School</strong><span class="meta">Secondary School Certificate (SSC) &middot; Science</span></div>
+    <div>Bhatai Bazar, Shailkupa, Jhenaidah, Bangladesh &middot; GPA: 5.00</div>
+  </div>
+</section>
+
+<section class="sec">
+  <h2>Experience</h2>
+  <div class="item">
+    <div class="row"><strong>Private Tutor (Home Tutor)</strong><span class="meta">Jhenaidah, Bangladesh &middot; Current</span></div>
+    <p>I provide home tutoring in Mathematics, Physics, and General Science. Teaching helps me strengthen my subject knowledge, communication, and ability to explain complex concepts clearly.</p>
+  </div>
+  <div class="item">
+    <div class="row"><strong>School-Level Team Leadership</strong><span class="meta">School years</span></div>
+    <p>I led every team I was part of during my school years. These responsibilities developed my interest in collaboration, teamwork, and shared problem-solving.</p>
+  </div>
+</section>
+
+<section class="sec">
+  <h2>Project</h2>
+  <div class="item">
+    <div class="row"><strong>Paperly &mdash; AI-Powered Productivity Tool</strong><span class="meta">Created with the assistance of AI tools</span></div>
+    <p>Paperly simplifies document creation, presentation generation, and bilingual content handling using natural-language prompts.</p>
+    <ul>
+      <li>Generate Word documents and PDF files from prompts</li>
+      <li>Create presentation slide files from prompts</li>
+      <li>Copy content from files</li>
+      <li>Translate document content between English and Bangla</li>
+    </ul>
+    <p class="meta">Live demo: https://quantarix-17.github.io/paperly/</p>
+  </div>
+</section>
+
+<section class="sec">
+  <h2>Skills and Learning</h2>
+  <div class="cols">
+    <div class="item"><h3>Current experience</h3><ul><li>AI-assisted development: used AI tools to help create Paperly (not independent programming)</li></ul></div>
+    <div class="item"><h3>Academic studies</h3><ul><li>Statistics and Data Science (university)</li><li>Strong interest in AI-powered applications</li></ul></div>
+    <div class="item"><h3>Learning goals</h3><ul><li>Programming fundamentals and Python</li><li>Data analysis and data science tools</li><li>English communication</li></ul></div>
+  </div>
+  <h3 class="sub" style="margin:8px 0 6px">Soft skills</h3>
+  <ul class="chips"><li>Teamwork</li><li>Leadership</li><li>Collaboration</li><li>Communication</li><li>Willingness to learn</li><li>Continuous self-improvement</li></ul>
+</section>
+
+<section class="sec">
+  <h2>Interests</h2>
+  <ul class="chips"><li>Singing</li><li>Football</li><li>Chess</li><li>Artificial Intelligence</li><li>Data Science</li><li>Technology</li><li>Learning new skills</li><li>Personal development</li></ul>
+</section>
+
+<section class="sec">
+  <h2>Personal Details</h2>
+  <p>Age: 20 &nbsp;&middot;&nbsp; Religion: Islam &nbsp;&middot;&nbsp; Location: Jhenaidah, Bangladesh</p>
+</section>
+
+</article>
+<!-- ============ END OF CV ============ -->
+</main>
+
+<script>
+(function () {
+  // remember the visitor's theme/language chosen on the main site
+  function get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  var theme = get('tz-theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  document.documentElement.setAttribute('data-theme', theme);
+  var L = { dl: 'Download PDF', busy: 'Preparing PDF…' };
+  var dlT = document.getElementById('dlT');
+
+  var btn = document.getElementById('dl'), paper = document.getElementById('paper');
+  btn.addEventListener('click', async function () {
+    if (!window.html2pdf) { window.print(); return; } // fallback: use the browser's "Save as PDF"
+    btn.disabled = true; dlT.textContent = L.busy;
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'position:fixed;left:-10000px;top:0;width:794px;background:#fff';
+    var clone = paper.cloneNode(true); clone.removeAttribute('id'); clone.classList.add('pdf');
+    wrap.appendChild(clone); document.body.appendChild(wrap);
+    try {
+      if (document.fonts && document.fonts.ready) await document.fonts.ready;
+      await window.html2pdf().set({
+        margin: [12, 0, 12, 0],
+        filename: 'Tamim-Hossen-Emon-CV.pdf',
+        image: { type: 'jpeg', quality: 0.96 },
+        html2canvas: { scale: 2, useCORS: true, backgroundColor: '#ffffff', windowWidth: 794, scrollX: 0, scrollY: 0 },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+        pagebreak: { mode: ['css', 'legacy'], avoid: ['.item', 'h2', '.chips li'] }
+      }).from(clone).save();
+    } catch (e) { window.print(); }
+    wrap.remove(); btn.disabled = false; dlT.textContent = L.dl;
+  });
+})();
+</script>
+</body>
+</html>
